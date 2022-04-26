@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as cors from 'cors';
 
 class App {
   public app: express.Express;
@@ -6,6 +7,7 @@ class App {
 
   constructor() {
     // ...
+    this.app = express();
     this.config();
     // ...
   }
@@ -19,11 +21,14 @@ class App {
     };
 
     this.app.use(accessControl);
+    this.app.use(express.json());
+    this.app.use(cors());
     // ...
   }
 
   // ...
   public start(PORT: string | number):void {
+    this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
     // ...
   }
 }
