@@ -6,11 +6,11 @@ import Teams from './Teams';
 class Matches extends Model {
   // public <campo>!: <tipo>;
   public id?: number;
-  public home_team: number;
-  public home_team_goals: number;
-  public away_team: number;
-  public away_team_goals: number;
-  public in_progress: boolean;
+  public homeTeam: number;
+  public homeTeamGoals: number;
+  public awayTeam: number;
+  public awayTeamGoals: number;
+  public inProgress: boolean;
 }
 
 Matches.init({
@@ -20,7 +20,7 @@ Matches.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  home_team: {
+  homeTeam: {
     type: DataTypes.INTEGER,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -29,10 +29,10 @@ Matches.init({
       key: 'id',
     },
   },
-  home_team_goals: {
+  homeTeamGoals: {
     type: DataTypes.INTEGER,
   },
-  away_team: {
+  awayTeam: {
     type: DataTypes.INTEGER,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
@@ -41,10 +41,10 @@ Matches.init({
       key: 'id',
     },
   },
-  away_team_goals: {
+  awayTeamGoals: {
     type: DataTypes.INTEGER,
   },
-  in_progress: {
+  inProgress: {
     type: DataTypes.BOOLEAN,
   },
 }, {
