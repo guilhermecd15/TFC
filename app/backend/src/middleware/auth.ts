@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,12 +17,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ message: 'Password must have at least 6 characters' });
     }
 
-    if (!regex.test(email)) {
-      return res.status(401).json({ message: 'Incorrect email or password' });
-    }
+    if (!regex.test(email)) return res.status(401).json({ message: 'Incorrect email or password' });
 
     next();
   } catch (e) {
     next(e);
   }
-}
+};

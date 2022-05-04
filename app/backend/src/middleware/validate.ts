@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs/promises';
 
@@ -12,10 +12,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const decoded = jwt.verify(authorization, secret);
-    
+
     req.body = { decoded, ...req.body };
     next();
   } catch (e) {
     next(e);
   }
-}
+};

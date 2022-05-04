@@ -5,9 +5,13 @@ import db from '.';
 class Users extends Model {
   // public <campo>!: <tipo>;
   public id?: number;
+
   public username: string;
+
   public email: string;
+
   public password: string;
+
   public role: string;
 }
 
@@ -29,7 +33,7 @@ Users.init({
   },
   role: {
     type: DataTypes.STRING,
-  }, 
+  },
 }, {
   // ... Outras configs
   underscored: true,
@@ -39,7 +43,7 @@ Users.init({
 });
 
 /**
-  * `Workaround` para aplicar as associations em TS: 
+  * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 

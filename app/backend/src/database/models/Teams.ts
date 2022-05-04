@@ -5,6 +5,7 @@ import db from '.';
 class Teams extends Model {
   // public <campo>!: <tipo>;
   public id?: number;
+
   public teamName: string;
 }
 
@@ -17,7 +18,7 @@ Teams.init({
   },
   teamName: {
     type: DataTypes.STRING,
-  } 
+  },
 }, {
   // ... Outras configs
   underscored: true,
@@ -27,7 +28,7 @@ Teams.init({
 });
 
 /**
-  * `Workaround` para aplicar as associations em TS: 
+  * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 

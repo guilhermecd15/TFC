@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import AuthService from "../service/auth";
+import { NextFunction, Request, Response } from 'express';
+import AuthService, { tokenGenerator, compare } from '../service/auth';
 
 export default class LoginController {
   private authService: AuthService;
 
   constructor() {
-    this.authService = new AuthService;
+    this.authService = new AuthService();
   }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,19 +17,21 @@ export default class LoginController {
         return res.status(401).json({ message: 'could not authenticate user' });
       }
 
-      const authUser = await this.authService.compare(password, userFind.password)
+      const authUser = compare(password, userFind.password);
       if (!authUser) {
         return res.status(401).json({ message: 'could not authenticate user' });
       }
 
-      const token = await this.authService.tokenGenerator(userFind.username, userFind.email, userFind.role);
-      const user = { id: userFind.id, username: userFind.username, email: userFind.email, role: userFind.role }
+      const token = await
+      tokenGenerator(userFind.username, userFind.email, userFind.role);
+      const user = {
+        id: userFind.id, username: userFind.username, email: userFind.email, role: userFind.role };
 
       res.status(200).json({ user, token });
     } catch (e) {
       next(e);
     }
-  }
+  };
 
   validate = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -39,5 +41,5 @@ export default class LoginController {
     } catch (e) {
       next(e);
     }
-  }
+  };
 }

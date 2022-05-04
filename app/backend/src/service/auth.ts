@@ -1,7 +1,7 @@
-import Users from '../database/models/Users';
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs/promises';
 import * as bcrypt from 'bcryptjs';
+import Users from '../database/models/Users';
 
 const secret = fs.readFile('jwt.evaluation.key', 'utf-8');
 
@@ -16,14 +16,10 @@ export default class AuthService {
 
     return user;
   }
-
-  public async compare(password: string, passwordUser: string) {
-   return await bcrypt.compare(password, passwordUser);
-  }
-
-  public async tokenGenerator(email: string, username: string, role: string) {
-    const token = jwt.sign({ email, username, role }, await secret, { expiresIn: '7d', algorithm: 'HS256' });
-  
-    return token;
-  }
 }
+
+export const compare = (password: string, passwordUser: string) => bcrypt
+  .compare(password, passwordUser);
+
+export const tokenGenerator = async (email: string, username: string, role: string) => jwt
+  .sign({ email, username, role }, await secret, { expiresIn: '7d', algorithm: 'HS256' });
