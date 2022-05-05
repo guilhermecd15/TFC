@@ -56,4 +56,17 @@ export default class MatchesController {
       next(e);
     }
   };
+
+  update = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+      const { id } = req.params;
+
+      const match = await this.matchesService
+        .update(Number(id), Number(homeTeamGoals), Number(awayTeamGoals));
+      res.status(200).json(match);
+    } catch (e) {
+      next(e);
+    }
+  };
 }
