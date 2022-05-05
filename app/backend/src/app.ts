@@ -31,6 +31,7 @@ class App {
   private router():void {
     this.app.use(routes);
   }
+
   // ...
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));

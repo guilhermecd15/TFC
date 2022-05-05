@@ -21,4 +21,14 @@ export default class MatchesService {
     });
     return matches;
   }
+
+  public async create(body: object) {
+    const match = await this.matches.create({ ...body });
+    return match;
+  }
+
+  public async finish(id: number) {
+    const match = await this.matches.update({ inProgress: false }, { where: { id } });
+    return match;
+  }
 }
