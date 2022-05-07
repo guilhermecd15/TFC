@@ -3,8 +3,8 @@ interface ITeamHome {
   awayTeamGoals: number;
 }
 
-export interface IT {
-  id?: number;
+export interface ITH {
+  id: number;
   teamName: string;
   teamHome: ITeamHome[];
 }
