@@ -115,3 +115,24 @@ export const createBoardAway = async (teams: any) => {
   });
   return arrResult;
 };
+
+export const createLeaderboard = async (teamsHome: ILearderBoard[], teamsAway: ILearderBoard[]) => {
+  const arrResult: ILearderBoard[] = [];
+  teamsHome.forEach((th: ILearderBoard) => teamsAway.forEach((ta: ILearderBoard) => {
+    if (th.name === ta.name) {
+      const obj = { name: th.name,
+        totalPoints: th.totalPoints + ta.totalPoints,
+        totalGames: th.totalGames + ta.totalGames,
+        totalVictories: th.totalVictories + ta.totalVictories,
+        totalDraws: th.totalDraws + ta.totalDraws,
+        totalLosses: th.totalLosses + ta.totalLosses,
+        goalsFavor: th.goalsFavor + ta.goalsFavor,
+        goalsOwn: th.goalsOwn + ta.goalsOwn,
+        goalsBalance: th.goalsBalance + ta.goalsBalance };
+      const obj2 = { ...obj,
+        efficiency: Number(((obj.totalPoints / (obj.totalGames * 3)) * 100).toFixed(2)) };
+      arrResult.push(obj2);
+    }
+  }));
+  return arrResult;
+};
