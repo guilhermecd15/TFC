@@ -6,39 +6,63 @@ import { app } from '../app';
 import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
+import Users from '../database/models/Users';
+
+const { admin: { validAdmin, invalidAdmin }, user: { validUser } } = require('../../../../__tests__/utils/users');
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+  describe('Post Login', () => {
+    let chaiHttpResponse: Response;
 
-  // let chaiHttpResponse: Response;
+    before(async () => {
+      sinon
+        .stub(Users, "findOne")
+        .resolves(validAdmin as Users);
+    });
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+    after(() => {
+      (Users.findOne as sinon.SinonStub).restore();
+    });
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+    it('Sucesso', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({ email: validAdmin.email, password: validAdmin.password })
+      
+      expect(chaiHttpResponse.status).to.be.equal(200)
+      expect(chaiHttpResponse.body.user).to.be.keys('id', 'username', 'role', 'email');
+    });
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+    it('Email invalido', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({ email: 'validAdmin.email', password: validAdmin.password })
+      
+      expect(chaiHttpResponse.status).to.be.equal(401)
+      expect(chaiHttpResponse.body.message).to.be.equal('Incorrect email or password');
+    });
 
-  //   expect(...)
-  // });
+    it('Senha invalida', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({ email: validAdmin.email, password: '12345' })
+      
+      expect(chaiHttpResponse.status).to.be.equal(401)
+      expect(chaiHttpResponse.body.message).to.be.equal('Password must have at least 6 characters');
+    });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+    it('Sem email', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({ password: 'validAdmin.password' })
+      
+      expect(chaiHttpResponse.status).to.be.equal(400)
+      expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+    });
+
+    it('Sem senha', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({ email: validAdmin.email })
+      
+      expect(chaiHttpResponse.status).to.be.equal(400)
+      expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+    });
+  // it('Seu sub-teste', () => {
+  //   expect(false).to.be.eq(true);
   });
 });
